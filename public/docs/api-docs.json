@@ -1,0 +1,405 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API",
+    "description": "Task Management API",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/GIRIADAM67/Task_API/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "summary": "Pendaftaran User",
+        "description": "Adds an item to the system",
+        "operationId": "registerUser",
+        "requestBody": {
+          "description": "List User",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "User Already Exists"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Login User",
+        "description": "Login User Untuk mendapatkan Token",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "Token List",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get User Profile",
+        "description": "Tampilkan Profile User setelah mendapat Token\n",
+        "operationId": "Profile User",
+        "parameters": [
+          {
+            "name": "Token",
+            "in": "query",
+            "description": "Bearer Token API",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "tags": [
+          "List Tasks"
+        ],
+        "summary": "Menampilkan Semua List Tasks",
+        "description": "Tampilkan Profile User setelah mendapat Token\n",
+        "operationId": "ListTask",
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListTasks"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/task": {
+      "post": {
+        "tags": [
+          "Tambah Tasks"
+        ],
+        "summary": "Tambah Tugas Harian",
+        "description": "Login User Untuk mendapatkan Token",
+        "operationId": "taskAdd",
+        "requestBody": {
+          "description": "Tambahan List Task",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/tasks/id": {
+      "put": {
+        "tags": [
+          "Edit Task"
+        ],
+        "summary": "Tambah Tugas Harian",
+        "description": "Login User Untuk mendapatkan Token",
+        "operationId": "tasEdit",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "query",
+            "description": "Bearer Token API",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Tambahan List Task",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Edit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/tasks/tasks": {
+      "delete": {
+        "tags": [
+          "Hapus Task"
+        ],
+        "summary": "Hapus Task Tertentu",
+        "description": "Login User Untuk mendapatkan Token",
+        "operationId": "DestroyTask",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "query",
+            "description": "Id Task",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "required": [
+          "email",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "usertest1@test.com"
+          }
+        }
+      },
+      "Register": {
+        "required": [
+          "email",
+          "name",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "example": "usertest1@test.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "admin1234"
+          }
+        }
+      },
+      "Login": {
+        "required": [
+          "email",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "BhttGHadr6dF7RnSP3qbZ7kUTbRNZ1TSrp6qijWZ7c8af482"
+          },
+          "email": {
+            "type": "string",
+            "example": "usertest1@test.com"
+          }
+        }
+      },
+      "ListTasks": {
+        "required": [
+          "assignee_id",
+          "descriptions",
+          "due_date",
+          "status",
+          "title",
+          "user_id"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "example": "Task Pertama"
+          },
+          "descriptions": {
+            "type": "string",
+            "example": "Deskripsi Task Pertama"
+          },
+          "status": {
+            "type": "string",
+            "example": "pending"
+          },
+          "due_date": {
+            "type": "string",
+            "example": "2025-02-20"
+          },
+          "assignee_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Task": {
+        "required": [
+          "assignee_id",
+          "descriptions",
+          "due_date",
+          "title",
+          "user_id"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "example": "Task Pertama"
+          },
+          "descriptions": {
+            "type": "string",
+            "example": "Deskripsi Task Pertama"
+          },
+          "due_date": {
+            "type": "string",
+            "example": "2025-02-20"
+          },
+          "assignee_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Edit": {
+        "required": [
+          "assignee_id",
+          "descriptions",
+          "due_date",
+          "status",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Task Pertama"
+          },
+          "descriptions": {
+            "type": "string",
+            "example": "Deskripsi Task Pertama"
+          },
+          "status": {
+            "type": "string",
+            "example": "in_progress"
+          },
+          "due_date": {
+            "type": "string",
+            "example": "2025-02-20"
+          },
+          "assignee_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}
