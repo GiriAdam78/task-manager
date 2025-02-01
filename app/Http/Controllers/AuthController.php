@@ -15,6 +15,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role'     => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -25,6 +26,7 @@ class AuthController extends Controller
             'name' => $validator['name'],
             'email' => $validator['email'],
             'password' => Hash::make($validator['password']),
+            'role' => $validator['role'] ?? 'user'
         ]);
 
         return response()->json(['message' => 'User registered successfully']);
