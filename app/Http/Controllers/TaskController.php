@@ -10,7 +10,13 @@ use App\Notifications\TaskNotification;
 class TaskController extends Controller
 {
     public function index(){
-        return Task::where('user_id', auth()->id())->get();
+        // return Task::where('user_id', auth()->id())->get();
+        $tasks = Task::select('tasks.*', 'users.name as assignee_name')
+                ->join('users', 'tasks.assignee_id', '=', 'users.id')
+                ->where('tasks.user_id', auth()->id())
+                ->get();
+        return response()->json($tasks);
+
     }
 
     public function store(Request $request){

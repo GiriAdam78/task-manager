@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Http\Middleware\CorsMiddleware;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -37,3 +38,8 @@ Route::get('/docs', function() {
     return response()->json(json_decode(file_get_contents(public_path('docs/api-docs.json'))));
 });
 
+Route::middleware([CorsMiddleware::class])->group(function () {
+    Route::get('/data', function () {
+        return response()->json(['message' => 'CORS enabled']);
+    });
+});
